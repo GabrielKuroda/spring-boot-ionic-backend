@@ -1,7 +1,7 @@
 package com.estudos.springudemy.resources;
 
 import com.estudos.springudemy.domain.Categoria;
-import com.estudos.springudemy.servicies.CategoriaService;
+import com.estudos.springudemy.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
