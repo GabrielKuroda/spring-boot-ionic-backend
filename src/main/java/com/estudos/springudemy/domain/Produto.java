@@ -1,6 +1,5 @@
 package com.estudos.springudemy.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ public class Produto implements Serializable {
     private Double preco;
 
     @ManyToMany
-    @JsonBackReference
+    @JsonIgnore
     @JoinTable(name = "PRODUTO_CATEGORIA",
                 joinColumns = @JoinColumn(name = "produto_id"),
                 inverseJoinColumns = @JoinColumn(name = "categoria_id"))
