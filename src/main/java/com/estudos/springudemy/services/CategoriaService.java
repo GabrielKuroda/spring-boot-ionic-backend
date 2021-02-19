@@ -1,6 +1,7 @@
 package com.estudos.springudemy.services;
 
 import com.estudos.springudemy.domain.Categoria;
+import com.estudos.springudemy.dto.CategoriaDTO;
 import com.estudos.springudemy.repositories.CategoriaRepository;
 import com.estudos.springudemy.services.execptions.DataIntegrityExecption;
 import com.estudos.springudemy.services.execptions.ObjectNotFoundExecption;
@@ -52,5 +53,9 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest =  PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return categoriaRepository.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO dto){
+        return new Categoria(dto.getId(),dto.getNome());
     }
 }
