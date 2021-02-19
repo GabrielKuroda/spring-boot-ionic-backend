@@ -1,6 +1,7 @@
 package com.estudos.springudemy.services;
 
 import com.estudos.springudemy.domain.Categoria;
+import com.estudos.springudemy.domain.Cliente;
 import com.estudos.springudemy.dto.CategoriaDTO;
 import com.estudos.springudemy.repositories.CategoriaRepository;
 import com.estudos.springudemy.services.execptions.DataIntegrityExecption;
@@ -33,8 +34,9 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria obj) {
-        find(obj.getId());
-        return categoriaRepository.save(obj);
+        Categoria newObj = find(obj.getId());
+        updateData(newObj,obj);
+        return categoriaRepository.save(newObj);
     }
 
     public void delete(Integer id) {
@@ -58,4 +60,9 @@ public class CategoriaService {
     public Categoria fromDTO(CategoriaDTO dto){
         return new Categoria(dto.getId(),dto.getNome());
     }
+
+    private void updateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
+    }
+
 }
