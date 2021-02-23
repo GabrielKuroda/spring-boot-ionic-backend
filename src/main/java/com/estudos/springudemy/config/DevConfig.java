@@ -1,6 +1,8 @@
 package com.estudos.springudemy.config;
 
 import com.estudos.springudemy.services.DBService;
+import com.estudos.springudemy.services.EmailService;
+import com.estudos.springudemy.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +30,11 @@ public class DevConfig {
 
         dbService.instantiateDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 
 }
