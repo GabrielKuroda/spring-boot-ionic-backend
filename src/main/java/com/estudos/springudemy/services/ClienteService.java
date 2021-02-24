@@ -4,12 +4,15 @@ import com.estudos.springudemy.domain.Categoria;
 import com.estudos.springudemy.domain.Cidade;
 import com.estudos.springudemy.domain.Cliente;
 import com.estudos.springudemy.domain.Endereco;
+import com.estudos.springudemy.domain.enums.Perfil;
 import com.estudos.springudemy.domain.enums.TipoCliente;
 import com.estudos.springudemy.dto.CategoriaDTO;
 import com.estudos.springudemy.dto.ClienteDTO;
 import com.estudos.springudemy.dto.ClienteNewDTO;
 import com.estudos.springudemy.repositories.ClienteRepository;
 import com.estudos.springudemy.repositories.EnderecoRepository;
+import com.estudos.springudemy.security.UserSS;
+import com.estudos.springudemy.services.execptions.AuthorizationExecption;
 import com.estudos.springudemy.services.execptions.DataIntegrityExecption;
 import com.estudos.springudemy.services.execptions.ObjectNotFoundExecption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,10 @@ public class ClienteService {
     private BCryptPasswordEncoder pe;
 
     public Cliente find(Integer id){
+
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))
+            throw new AuthorizationExecption("Acesso Negado!");
         Optional<Cliente> obj = clienteRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundExecption(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
