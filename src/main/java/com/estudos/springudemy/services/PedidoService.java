@@ -6,8 +6,14 @@ import com.estudos.springudemy.repositories.CategoriaRepository;
 import com.estudos.springudemy.repositories.ItemPedidoRepository;
 import com.estudos.springudemy.repositories.PagamentoRepository;
 import com.estudos.springudemy.repositories.PedidoRepository;
+import com.estudos.springudemy.security.UserSS;
+import com.estudos.springudemy.services.execptions.AuthorizationExecption;
 import com.estudos.springudemy.services.execptions.ObjectNotFoundExecption;
+import com.mysql.cj.xdevapi.Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,5 +72,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+        UserSS user = UserService.authenticated();
+        if(user == null){
+            throw new AuthorizationExecption("Acesso Negado!");
+        }
+        PageRequest pageRequest =  PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(user.getId());
+        return pedidoRepository.findByCliente(cliente,pageRequest);
     }
 }
